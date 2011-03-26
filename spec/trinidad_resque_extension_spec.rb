@@ -28,6 +28,12 @@ describe "Trinidad::Extensions::ResqueServerExtension" do
     context.should be_instance_of(Trinidad::Tomcat::StandardContext)
   end
 
+  it "does not create the application context when the option :disable_web is true" do
+    e = Trinidad::Extensions::ResqueServerExtension.new({:disable_web => true})
+    e.configure tomcat
+    tomcat.host.find_child('/resque').should be_nil
+  end
+
   it "uses the rackup parameter to start the application" do
     find_web_app.init_params['rackup'].should =~ /Resque::Server.new/
   end
