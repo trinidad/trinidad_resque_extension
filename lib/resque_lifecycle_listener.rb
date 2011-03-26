@@ -24,20 +24,29 @@ module Trinidad
 
         def start_workers
           Thread.new do
-            task = 'resque:work'
-
-            if @options[:count]
-              ENV['COUNT'] = @options[:count]
-              task = 'resque:workers'
-            end
-
-            ENV['QUEUES'] ||= @options[:queues]
-
-            ::Resque.redis = @options[:redis_host]
-
-            load @options[:setup] if @options[:setup]
-            Rake::Task[task].invoke
+            task = configure_workers
+            invoke_workers task
           end
+        end
+
+        def configure_workers
+          task = 'resque:work'
+
+          if @options[:count]
+            ENV['COUNT'] = @options[:count].to_s
+            task = 'resque:workers'
+          end
+
+          ENV['QUEUES'] ||= @options[:queues]
+
+          ::Resque.redis = @options[:redis_host]
+
+          load @options[:setup] if @options[:setup]
+          task
+        end
+
+        def invoke_workers(task)
+          Rake::Task[task].invoke
         end
 
         def stop_workers
