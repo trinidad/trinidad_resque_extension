@@ -47,9 +47,13 @@ module Trinidad
 
         def invoke_workers(task)
           Rake::Task[task].invoke
+        rescue Errno::ECONNREFUSED
+          puts "WARN: Cannot connect with Redis. Please restart the server when Redis is up again."
+          @redis_econnref = true
         end
 
         def stop_workers
+          return if @redis_econnref # double check redis is connected, otherwise return
           ::Resque.workers.each { |w| w.shutdown! }
         end
       end

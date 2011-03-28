@@ -35,6 +35,15 @@ describe "Trinidad::Extensions::Resque::ResqueLifecycleListener" do
     listener.invoke_workers('resque:work')
   end
 
+  it "does not try to shut the workers down when it could not connect with Redis" do
+    Rake::Task.any_instance.expects(:invoke).raises(Errno::ECONNREFUSED)
+    ::Resque.expects(:workers).never
+
+    listener = R.new({})
+    listener.invoke_workers('resque:work')
+    listener.stop_workers
+  end
+
   it "invokes the shutdown! method for each worker before stopping the host" do
     m = mock
     m.expects(:shutdown!)
