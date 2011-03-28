@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   ## the sub! line in the Rakefile
   s.name              = 'trinidad_resque_extension'
   s.version           = '0.1.0'
-  s.date              = '2011-03-25'
+  s.date              = '2011-03-28'
   s.rubyforge_project = 'trinidad_resque_extension'
 
   ## Make sure your summary is short. The description may be as long
@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
   ## Specify any RDoc options here. You'll want to add your README and
   ## LICENSE files to the extra_rdoc_files list.
   s.rdoc_options = ["--charset=UTF-8"]
-  s.extra_rdoc_files = %w[README LICENSE]
+  s.extra_rdoc_files = %w[README.md LICENSE]
 
   ## List your runtime dependencies here. Runtime dependencies are those
   ## that are needed for an end user to actually USE your code.
@@ -55,13 +55,15 @@ Gem::Specification.new do |s|
   # = MANIFEST =
   s.files = %w[
     Gemfile
-    History.txt
+    Gemfile.lock
     LICENSE
-    README
+    README.md
     Rakefile
     lib/resque_ext.rb
     lib/resque_lifecycle_listener.rb
     lib/trinidad_resque_extension.rb
+    spec/resque_lifecycle_listener_spec.rb
+    spec/resque_test_setup.rb
     spec/spec.opts
     spec/spec_helper.rb
     spec/trinidad_resque_extension_spec.rb
