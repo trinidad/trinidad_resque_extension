@@ -61,6 +61,7 @@ end
 #
 #############################################################################
 
+desc "release a version"
 task :release => :build do
   unless `git branch` =~ /^\* master$/
     puts "You must be on the master branch to release!"
@@ -73,10 +74,16 @@ task :release => :build do
   sh "gem push pkg/#{name}-#{version}.gem"
 end
 
+desc "build gem"
 task :build => :gemspec do
   sh "mkdir -p pkg"
   sh "gem build #{gemspec_file}"
   sh "mv #{gem_file} pkg"
+end
+
+desc "install gem"
+task :install => :build do
+  sh "gem install pkg/#{name}-#{version}.gem"
 end
 
 task :gemspec do
