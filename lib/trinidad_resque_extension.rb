@@ -20,6 +20,7 @@ module Trinidad
         super
         @options[:redis_host] ||= 'localhost:6379'
         @options[:queues] ||= 'trinidad_resque'
+        @options[:path] ||= File.join('lib', 'tasks')
       end
 
       def configure(tomcat)

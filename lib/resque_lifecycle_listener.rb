@@ -24,8 +24,15 @@ module Trinidad
 
         def start_workers
           Thread.new do
+            load_tasks
             task = configure_workers
             invoke_workers task
+          end
+        end
+
+        def load_tasks
+          Dir.glob(File.join(@options[:path], '**', '*.rb')).each do |path|
+            load path
           end
         end
 

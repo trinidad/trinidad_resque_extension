@@ -41,6 +41,16 @@ option `disable_web`:
      disable_web: true
 </pre>
 
+The extension tries to load the tasks from the directory `lib/tasks` but
+this parameter can be overrided with the option `path`:
+
+<pre>
+---
+  extensions:
+    resque:
+      path: 'tasks_dir'
+</pre>
+
 Copyright
 =========
 
