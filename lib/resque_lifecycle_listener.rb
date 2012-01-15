@@ -53,7 +53,9 @@ module Trinidad
         end
 
         def invoke_workers(task)
-          Rake::Task[task].invoke
+          t = Rake::Task[task]
+          t.application.options[:trace] = true
+          t.invoke
         rescue Errno::ECONNREFUSED
           puts "WARN: Cannot connect with Redis. Please restart the server when Redis is up again."
           @redis_econnref = true
