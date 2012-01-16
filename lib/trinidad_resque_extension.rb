@@ -2,7 +2,7 @@ module Trinidad
   module Extensions
     require File.expand_path('../resque_lifecycle_listener', __FILE__)
     module Resque
-      VERSION = '0.1.0'
+      VERSION = '0.1.1'
     end
 
     class ResqueApp < Trinidad::RackupWebApp
@@ -67,8 +67,14 @@ module Trinidad
 
       def trap_signals(tomcat)
         # trap signals and stop tomcat properly to make sure resque is also stopped properly
-        trap('INT') { tomcat.stop }
-        trap('TERM') { tomcat.stop }
+        trap('INT') do
+          ::Resque.workers.each { |w| w.shutdown! }
+          tomcat.stop
+        end
+        trap('TERM') do
+          ::Resque.workers.each { |w| w.shutdown! }
+          tomcat.stop
+        end
       end
     end
 
